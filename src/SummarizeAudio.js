@@ -127,6 +127,14 @@ function RecForm() {
                                 } className="button-29">Upload</button>
                         </div>
 
+                        <div className="questionBox">
+
+                        <div className="questionBoxText">
+
+                            <textarea defaultValue={descriptionPlaceholder} onChange={e => setDescription(e.target.value)} name="description" className="textareaInput" rows="10" placeholder="Your Transcription will appear here. "></textarea>
+                        </div>
+                        </div>
+
                     </div>
 
                 </div>
