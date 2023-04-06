@@ -2,29 +2,12 @@ import React from "react";
 import { useState, useEffect } from 'react';
 import './App.css';
 
-//components
-// import Question from "../deprecated/Question";
-
 import axios from "axios";
 
-// import Loading from "./Loading";
-// import OutputRecForm from "../deprecated/OutputRecForm";
-
-
-//images
-
 import paste from './images/paste.svg'
-// import select from './images/select.svg'
-// import write from './images/write.svg'
 
 
-
-
-
-
-function RecForm() {
-
-
+function SummarizeAudio() {
 
     const [prompt, setPrompt] = useState("");
 
@@ -41,38 +24,26 @@ function RecForm() {
 
     const [isLoading, setIsLoading] = useState(false)
     const [hasCalledAPI, setHasCalledAPI] = useState(false)
-    const [url, setURL] = useState("")
+    const [url, setURL] = useState("TESTING")
     const [descriptionPlaceholder, setDescriptionPlaceholder] = useState()
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-
-        setPrompt(prevPrompt => {
-            const updatedPrompt = `write me a letter of recommendation with a ${style} style in ${words} words for a candidate named ${name} with these accomplishments: ${accomplishments} and these skills: ${skills} who is applying for with this job description ${description} who I have the following relationship with: ${relationship}`;
-            console.log(updatedPrompt); // this will log the updated prompt value
-            return updatedPrompt;
-        });
-
-        setIsLoading(true)
-        setHasCalledAPI(false)
-
-        // console.log(document.getElementById("Loading"))
-
-        // targetRef.current.scrollIntoView({ behavior: 'auto' })
-
-        setTimeout(()=> 
-        {window.scrollBy({
-            top: 800,
-            behavior: "smooth"
-        })
-    }, 
-    1500)
-}
-
-
-
+          
+        const data = {
+            url
+        };
+      
+        axios
+          .post('/submit', data)
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    };
+    
     useEffect(() => {
         if (prompt !== "") {
             axios
@@ -90,42 +61,43 @@ function RecForm() {
                     console.error(err);
                 });
         }
-
     }, [prompt])
-
-
-
-
 
     return (
         <div>
             <div className="formTitle">
                 <h1 className="headTitle">Is that what I said?</h1>
                 <h2 className="headSub"> Let's transcribe and summarize!</h2>
-                {/* <p className="headP">Please answer as many questions as possible</p> */}
             </div>
 
             <br />
             <br />
 
             <form className="inputForm" onSubmit={handleSubmit}>
-
-
                 <div className="questionBox">
-
-                    <img src={paste} className="numberSize" />
+                    {/* <img src={paste} className="numberSize" /> */}
                     <div className="questionBoxText">
                         <label className="label">Upload the audio file here. TO DO: LIST SUPPORTED FILE TYPES!</label>
                         <div className="submitLink">
                             <input name="description" id="jobDescription" className="input" placeholder="Your audio file transcription will appear here. " ></input>
-                            <button onClick={(e)=> 
-                                {
-                                    e.preventDefault()
-                                    setURL(document.getElementById("jobDescription").value)
-                                    // console.log(document.getElementById("jobDescription").value)
-                                }
-                                } className="button-29">Upload</button>
+                            <button onClick={(e) => { 
+                                e.preventDefault();
+                                const data = {
+                                    file: e.target.parentNode.childNodes[0].value
+                                };
+                                axios
+                                    .post('/submit', data)
+                                    .then((response) => {
+                                        console.log(response.data.data.file);
+                                    })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    });
+                            }}>
+                            </button>
+
                         </div>
+
 
                         <div className="questionBox">
 
@@ -217,6 +189,6 @@ function RecForm() {
 
         </div >
     )
-}
+                }
 
-export default RecForm
+export default SummarizeAudio
