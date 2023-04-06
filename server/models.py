@@ -17,13 +17,14 @@ class User(db.Model):
 
     cgpt_outputs = db.relationship('CgptOutput', backref='user')
 
+
 class AudioInput(db.Model):
     __tablename__ = 'audio_inputs'
 
     id = db.Column(db.Integer, primary_key=True)
     audio = db.Column(db.String)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    whisper_outputs = db.relationship('WhisperOutput', backref='audio_input')
 
 class WhisperOutput(db.Model):
     __tablename__ = 'whisper_outputs'
@@ -32,7 +33,8 @@ class WhisperOutput(db.Model):
     text = db.Column(db.String)
     prompt = db.Column(db.String)
 
-    audio_input_id = db.Column(db.Integer, db.ForeignKey('audio_inputs.id'))
+    audio_input_id = db.Column(db.Integer, db.ForeignKey('audio_inputs.id'), nullable=False)
+    cgpt_output = db.relationship('CgptOutput', backref='whisper_output')
 
 class CgptOutput(db.Model):
     __tablename__ = 'cgpt_outputs'
@@ -40,5 +42,6 @@ class CgptOutput(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String)
 
-    whisper_output_id = db.Column(db.Integer, db.ForeignKey('whisper_outputs.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    whisper_output_id = db.Column(db.Integer, db.ForeignKey('whisper_outputs.id'), nullable=False)
 
