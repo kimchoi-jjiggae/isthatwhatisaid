@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Transcript from './Transcript';
+
+
+
 
 function SummarizeAudio() {
   const [audioFile, setAudioFile] = useState(null);
+  const [transcriptionPlaceholder, settranscriptionPlaceholder] = useState("Your transcription will go here.");
+  const [transcriptionvalue, settranscriptionValue] = useState(null)
+  //   const [transcription, placehol]
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +33,10 @@ function SummarizeAudio() {
       });
 
       // Log the response from the server
-      console.log(response.data);
+      console.log(response.data)
+      
+      settranscriptionPlaceholder(response.data["text"])
+
     } catch (error) {
       console.error(error);
     }
@@ -46,6 +56,17 @@ function SummarizeAudio() {
         </div>
         <button type="submit">Submit</button>
       </form>
+      <div className="questionBox">
+        <div className="questionBoxText">
+            <textarea
+            placeholder={transcriptionPlaceholder}
+            onChange={(e) => settranscriptionValue(e.target.value)}
+            name="transcription"
+            className="textareaInput"
+            rows="10"
+            ></textarea>
+        </div>
+        </div>
     </div>
   );
 }
@@ -62,12 +83,11 @@ function SummarizeAudio() {
 
 //     const [prompt, setPrompt] = useState("");
 //     const [response, setResponse] = useState("");
-//     const [description, setDescription] = useState();
+//     const [transcription, settranscription] = useState();
 //     const [words, setWords] = useState(300);
 //     const [isLoading, setIsLoading] = useState(false);
 //     const [hasCalledAPI, setHasCalledAPI] = useState(false);
 //     const [url, setURL] = useState("TESTING");
-//     const [descriptionPlaceholder, setDescriptionPlaceholder] = useState();
 
 //     const handleSubmit = (e) => {
 //         e.preventDefault();
@@ -118,7 +138,7 @@ function SummarizeAudio() {
 //                     <div className="questionBoxText">
 //                         <label className="label">Upload the audio file here. TO DO: LIST SUPPORTED FILE TYPES!</label>
 //                         <div className="submitLink">
-//                             <input name="description" id="jobDescription" className="input" placeholder="Your audio file transcription will appear here. " ></input>
+//                             <input name="transcription" id="jobtranscription" className="input" placeholder="Your audio file transcription will appear here. " ></input>
 //                             <button onClick={(e) => { 
 //                                 e.preventDefault();
 //                                 const data = {
@@ -137,11 +157,7 @@ function SummarizeAudio() {
 //                             }}>
 //                             </button>
 //                         </div>
-//                         <div className="questionBox">
-//                             <div className="questionBoxText">
-//                                 <textarea defaultValue={descriptionPlaceholder} onChange={e => setDescription(e.target.value)} name="description" className="textareaInput" rows="10" placeholder="Your Transcription will appear here. "></textarea>
-//                             </div>
-//                         </div>
+
 //                     </div>
 //                 </div>
 //             </form >

@@ -24,7 +24,7 @@ def upload():
     # TODO: Call Whisper API with audio file and return response
     import io
     import openai
-    openai.api_key = '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'
+    openai.api_key = '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'
     with open("./uploads/test.mp3", "rb") as audio_file:
         audio_data = audio_file.read()
     audio_file = io.BytesIO(audio_data)
